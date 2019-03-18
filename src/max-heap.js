@@ -3,14 +3,13 @@ const Node = require('./node');
 class MaxHeap {
 	constructor() {
 		this.root = null;
-		this.parentNodes = [];	
+		this.parentNodes = [];
 	}
 
 	push(data, priority) {
-		let node1 = new Node(data, priority);
 		let node2 = new Node(data, priority);
-		insertNode(node1);
-		shiftNodeUp(node2);	
+		insertNode(new Node(data, priority));
+		shiftNodeUp(node2);
 	}
 
 	pop() {
@@ -26,7 +25,7 @@ class MaxHeap {
 	}
 
 	size() {
-		
+
 	}
 
 	isEmpty() {
@@ -34,22 +33,34 @@ class MaxHeap {
 	}
 
 	clear() {
-		
+        this.root = null;
+        this.parentNodes = [];
 	}
 
 	insertNode(node) {
-		if(!this.root || this.root.priority < node.priority) {
-			node.next = this.root;
-			this.root = node;
+		if(!this.root) {
+			this.parentNodes[this.parentNodes.length] = node;
+			this.root = this.parentNodes[0];
+			let i = this.parentNodes.length - 1;
+
+
+			this.root.left = this.parentNodes[i];
+			this.root.right = this.parentNodes[i];
 		} else {
-			while(this.root.next && node.priority < this.root.next.priority) {
-				this.root = this.root.next;
+			this.parentNodes[this.parentNodes.length] = node;
+
+			let i = this.parentNodes.length - 1;
+			this.parentNodes[i].left = 2 * i;
+			this.parentNodes[i].right = 2 * i + 1;
+			while(i >= 1 && this.parentNodes[Math.floor((i + 1) / 2) - 1].priority < this.parentNodes[i].priority) {
+			let parent = Math.floor(((i + 1) / 2) - 1);
+			this.parentNodes[i] = this.parentNodes[parent];
+			this.parentNodes[parent] = node;
+			i = parent;
 			}
-			node.next = this.root.next;
-			this.root.next = node;
 		}
-		this.parentNodes.push(node);	
-	}
+		return this.parentNodes;
+	  }
 
 	shiftNodeUp(node) {
 		
