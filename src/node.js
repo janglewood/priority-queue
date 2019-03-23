@@ -75,6 +75,7 @@ class Node {
 				leftChild ? this.parent.left = leftChild : null;
 				rightChild ? this.parent.right = rightChild : null;
 			}
+<<<<<<< HEAD
 			this.parent.left ? this.left = this.parent.left : null;
 
 			if(this.parent.parent && parentIsLeft) {
